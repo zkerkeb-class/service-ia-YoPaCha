@@ -1,0 +1,47 @@
+{
+  "name": "story-generator",
+  "description": "Génère des histoires en français dans différents genres",
+  "version": "0.0.0",
+  "license": "ISC",
+  "author": "",
+  "homepage": "",
+  "repository": "",
+  "commands": {
+    "horrorStory": {
+      "description": "Génère une histoire d'horreur"
+    },
+    "comedyStory": {
+      "description": "Génère une histoire comique"
+    },
+    "romanceStory": {
+      "description": "Génère une histoire romantique"
+    },
+    "fantasyStory": {
+      "description": "Génère une histoire de fantasy"
+    },
+    "sciFiStory": {
+      "description": "Génère une histoire de science-fiction"
+    },
+    "adventureStory": {
+      "description": "Génère une histoire d'aventure"
+    },
+    "detectiveStory": {
+      "description": "Génère une histoire policière"
+    },
+    "wholesomeStory": {
+      "description": "Génère une histoire touchante"
+    },
+    "customStory": {
+      "description": "Génère une histoire selon des instructions personnalisées",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "instructions": {
+            "type": "string",
+            "description": "Instructions personnalisées pour la génération de l'histoire"
+          }
+        }
+      }
+    }
+  }
+}
