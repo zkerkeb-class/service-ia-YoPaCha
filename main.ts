@@ -57,29 +57,85 @@ async function generateStoryWithClaude(prompt: string): Promise<string> {
         });
     } catch (error) {
         console.error("Error generating story:", error);
-        return "Une erreur est survenue lors de la génération de l'histoire.";
+        if (error instanceof Error) {
+            console.error("Error message:", error.message);
+            console.error("Error stack:", error.stack);
+        }
+        return `Une erreur est survenue lors de la génération de l'histoire: ${error instanceof Error ? error.message : 'Unknown error'}`;
     }
 }
     
 server.prompt(
-    "horrorStory",
-    `Generate a horror story`,
-    (async () => {
-        const prompt = getInitialPrompt() + getHorrorPrompt();
-        const story = await generateStoryWithClaude(prompt);
-        
+    "testHandler",
+    `Simple test handler`,
+    async () => {
         return {
             messages: [
                 {
                     role: "assistant",
                     content: {
                         type: "text",
-                        text: story,
+                        text: "Test handler works! MCP server is functioning correctly.",
                     },
                 },
             ],
         };
-    }) as McpHandler as any,
+    },
+);
+
+server.prompt(
+    "horrorStory", 
+    `Generate a horror story`,
+    async () => {
+        console.log("Horror story handler called");
+        try {
+            console.log("Creating prompt...");
+            const initialPrompt = getInitialPrompt();
+            const horrorPrompt = getHorrorPrompt();
+            const combinedPrompt = initialPrompt + horrorPrompt;
+            console.log("Prompt created, length:", combinedPrompt.length);
+            
+            console.log("Calling Claude service...");
+            const story = await claudeService.generateStory({
+                prompt: combinedPrompt,
+                temperature: 0.8,
+                maxTokens: 6000
+            });
+            console.log("Story generated successfully, length:", story.length);
+            
+            return {
+                messages: [
+                    {
+                        role: "assistant",
+                        content: {
+                            type: "text",
+                            text: story,
+                        },
+                    },
+                ],
+            };
+        } catch (error) {
+            console.error("Detailed error in horrorStory handler:", error);
+            console.error("Error type:", typeof error);
+            console.error("Error constructor:", error?.constructor?.name);
+            if (error instanceof Error) {
+                console.error("Error message:", error.message);
+                console.error("Error stack:", error.stack);
+            }
+            
+            return {
+                messages: [
+                    {
+                        role: "assistant",
+                        content: {
+                            type: "text",
+                            text: `Erreur complète: ${JSON.stringify(error, Object.getOwnPropertyNames(error))}`,
+                        },
+                    },
+                ],
+            };
+        }
+    },
 );
 
 server.prompt(

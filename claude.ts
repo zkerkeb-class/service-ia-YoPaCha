@@ -35,7 +35,7 @@ export class ClaudeService {
     }
 
     async generateStory(options: StoryOptions): Promise<string> {
-        const { prompt, maxTokens = 4000, temperature = 0.7, model = "claude-3-opus-20240229" } = options;
+        const { prompt, maxTokens = 4000, temperature = 0.7, model = "claude-3-5-sonnet-20241022" } = options;
         
         try {
             const response = await this.client.messages.create({
@@ -60,7 +60,11 @@ export class ClaudeService {
             return "Je n'ai pas pu générer une histoire. Veuillez réessayer.";
         } catch (error) {
             console.error("Error generating story with Claude:", error);
-            throw new Error("Failed to generate story with Claude");
+            if (error instanceof Error) {
+                console.error("Error message:", error.message);
+                console.error("Error stack:", error.stack);
+            }
+            throw new Error(`Failed to generate story with Claude: ${error instanceof Error ? error.message : 'Unknown error'}`);
         }
     }
 }
