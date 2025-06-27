@@ -100,7 +100,3 @@ claude --mcp story-generator customStory --instructions "The story should be abo
 - `prompts.ts`: Contains functions that generate prompts for each story genre
 - `claude.ts`: Service that interfaces with the Claude API
 - `scripts/`: Helper scripts for testing and generating stories directly
-
-## License
-
-[Insert license]
