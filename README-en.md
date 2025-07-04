@@ -90,10 +90,10 @@ Once installed, you can use it as follows:
 
 ```bash
 # To generate a horror story
-claude --mcp story-generator horrorStory
+claude --mcp Stories-AI-Service horrorStory
 
 # To generate a custom story
-claude --mcp story-generator customStory --instructions "The story should be about a quest in a post-apocalyptic world where nature has reclaimed its rights."
+claude --mcp Stories-AI-Service customStory --instructions "The story should be about a quest in a post-apocalyptic world where nature has reclaimed its rights."
 ```
 
 ## Code Structure
