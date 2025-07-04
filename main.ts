@@ -14,6 +14,8 @@ import {
 } from "./prompts.js";
 import { ClaudeService } from "./claude.js";
 import dotenv from "dotenv";
+import path from 'path';
+import { fileURLToPath } from 'url';
 
 // Define a type that includes an index signature to satisfy the type checker
 type McpHandler = {
@@ -30,7 +32,9 @@ type McpHandler = {
 };
 
 // Load environment variables
-dotenv.config();
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+dotenv.config({ path: path.join(__dirname, '.env') });
 
 const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY;
 
