@@ -361,6 +361,25 @@ app.post('/generate-story', async (req, res) => {
     }
 });
 
+// HTTP endpoint for custom genre story generation
+app.post('/generate-custom-story', async (req, res) => {
+    try {
+        const { instructions } = req.body;
+        
+        if (!instructions || !instructions.trim()) {
+            return res.status(400).json({ error: 'Instructions personnalisées manquantes' });
+        }
+        
+        const prompt = getInitialPrompt() + getCustomPrompt(instructions);
+        const story = await generateStoryWithClaude(prompt);
+        
+        res.json({ story });
+    } catch (error) {
+        console.error('Error generating custom story:', error);
+        res.status(500).json({ error: 'Erreur lors de la génération de l\'histoire personnalisée' });
+    }
+});
+
 // Health check endpoint
 app.get('/health', (req, res) => {
     res.json({ status: 'OK', service: 'Stories-AI-Service' });
