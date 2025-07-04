@@ -15,7 +15,9 @@
     "@anthropic-ai/sdk": "^0.51.0",
     "@modelcontextprotocol/sdk": "^1.8.0",
     "@types/node": "^22.14.0",
+    "cors": "^2.8.5",
     "dotenv": "^16.5.0",
+    "express": "^4.18.2",
     "ts-node": "^10.9.2",
     "typescript": "^5.8.3"
   }

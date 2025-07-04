@@ -16,6 +16,8 @@ import { ClaudeService } from "./claude.js";
 import dotenv from "dotenv";
 import path from 'path';
 import { fileURLToPath } from 'url';
+import express from 'express';
+import cors from 'cors';
 
 // Define a type that includes an index signature to satisfy the type checker
 type McpHandler = {
@@ -323,5 +325,53 @@ server.prompt(
     } as any
 );
 
+// Create Express app for HTTP API
+const app = express();
+app.use(cors());
+app.use(express.json());
+
+// Genre mapping for French to English
+const genreMapping: { [key: string]: () => string } = {
+    'Horreur': () => getInitialPrompt() + getHorrorPrompt(),
+    'Comique': () => getInitialPrompt() + getComedyPrompt(),
+    'Romance': () => getInitialPrompt() + getRomancePrompt(),
+    'Fantasy': () => getInitialPrompt() + getFantasyPrompt(),
+    'Science-fiction': () => getInitialPrompt() + getSciFiPrompt(),
+    'Aventure': () => getInitialPrompt() + getAdventurePrompt(),
+    'Policier': () => getInitialPrompt() + getDetectivePrompt(),
+    'Réconfortant': () => getInitialPrompt() + getWholesomePrompt(),
+};
+
+// HTTP endpoint for story generation
+app.post('/generate-story', async (req, res) => {
+    try {
+        const { genre } = req.body;
+        
+        if (!genre || !genreMapping[genre]) {
+            return res.status(400).json({ error: 'Genre invalide ou manquant' });
+        }
+        
+        const prompt = genreMapping[genre]();
+        const story = await generateStoryWithClaude(prompt);
+        
+        res.json({ story });
+    } catch (error) {
+        console.error('Error generating story:', error);
+        res.status(500).json({ error: 'Erreur lors de la génération de l\'histoire' });
+    }
+});
+
+// Health check endpoint
+app.get('/health', (req, res) => {
+    res.json({ status: 'OK', service: 'Stories-AI-Service' });
+});
+
+// Start HTTP server
+const PORT = process.env.PORT || 8000;
+app.listen(PORT, () => {
+    console.log(`HTTP API server running on port ${PORT}`);
+});
+
+// Keep MCP server functionality
 const transport = new StdioServerTransport();
 await server.connect(transport);
