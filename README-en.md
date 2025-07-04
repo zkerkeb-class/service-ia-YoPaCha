@@ -75,11 +75,13 @@ The service exposes several MCP endpoints to generate different types of stories
 To install this MCP service locally and use it with the Claude CLI:
 
 ```bash
-# In the project directory, run:
-claude mcp add
+# In the project directory, run with the user scope parameter :
+claude mcp add -s user Stories-AI-Service npx tsx /path/to/service-ia-YoPaCha/main.ts
+# Claude will always launch it when executed
 
-# Or from anywhere, specifying the path:
-claude mcp add /path/to/stories-ai-service
+# Or in the parent directory with the project scope parameter :
+claude mcp add -s project Stories-AI-Service npx tsx /path/to/service-ia-YoPaCha/main.ts
+# Make sure that you are currently in a directory that contains the service-ia-YoPaCha and front-YoPaCha directories before either running this command or running Claude
 ```
 
 ### Usage
